@@ -13,11 +13,12 @@ class Square extends React.Component {
 }
 
 class Board extends React.Component {
-    
+
     constructor(props) {
         super(props)
         this.state = {
             squares: Array(this.props.row * this.props.col).fill(null)
+            , xNext: true
         }
     }
 
@@ -26,15 +27,15 @@ class Board extends React.Component {
     }
 
     handleClick(i) {
-        const squares = this.state.squares.slice();        
+        const squares = this.state.squares.slice();
         if (!squares[i]) {
-            squares[i] = 'x';
-            this.setState({ squares: squares });
+            squares[i] = this.state.xNext ? 'X' : 'O';
+            this.setState({ squares: squares, xNext:!this.state.xNext });
         }
     }
 
     render() {
-        const status = 'Next player: X';
+        const status = 'Next player: '+(this.state.xNext?'X':'O');
         var h = [], c = 0;
         let row = (r) => {
             var _h = [];
