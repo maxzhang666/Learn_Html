@@ -3,31 +3,43 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class Square extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { value: null }
-    }
     render() {
         return (
-            <button className="square" onClick={()=>{this.setState({value:"x"})}}>
-                {this.state.value}
+            <button className="square" onClick={() => this.props.onClick()}>
+                {this.props.value}
             </button>
         );
     }
 }
 
 class Board extends React.Component {
+    
+    constructor(props) {
+        super(props)
+        this.state = {
+            squares: Array(this.props.row * this.props.col).fill(null)
+        }
+    }
+
     renderSquare(i) {
-        return <Square value={i}/>;
+        return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)} />;
+    }
+
+    handleClick(i) {
+        const squares = this.state.squares.slice();        
+        if (!squares[i]) {
+            squares[i] = 'x';
+            this.setState({ squares: squares });
+        }
     }
 
     render() {
         const status = 'Next player: X';
-        var h = [],c=0;
+        var h = [], c = 0;
         let row = (r) => {
             var _h = [];
             for (var j = 1; j <= r; j++) {
-                _h.push(this.renderSquare(c));c++;
+                _h.push(this.renderSquare(c)); c++;
             }
             return _h
         }
